@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Credit Card Fraud Detection</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Credit Card Fraud Detection</h1>
+    <form action="/predict" method="post">
+        <label>Transaction Amount:</label>
+        <input type="number" name="amount" step="0.01" required>
+
+        <label>Transaction Type:</label>
+        <select name="transaction_type">
+            <option value="CASH_IN">CASH_IN</option>
+            <option value="CASH_OUT">CASH_OUT</option>
+            <option value="DEBIT">DEBIT</option>
+            <option value="PAYMENT">PAYMENT</option>
+            <option value="TRANSFER">TRANSFER</option>
+        </select>
+
+        <label>Old Balance (Origin Account):</label>
+        <input type="number" name="old_balance_org" step="0.01" required>
+
+        <label>New Balance (Origin Account):</label>
+        <input type="number" name="new_balance_org" step="0.01" required>
+
+        <label>Old Balance (Destination Account):</label>
+        <input type="number" name="old_balance_dest" step="0.01" required>
+
+        <label>New Balance (Destination Account):</label>
+        <input type="number" name="new_balance_dest" step="0.01" required>
+
+        <input type="submit" value="Predict Fraud">
+    </form>
+</body>
+</html>

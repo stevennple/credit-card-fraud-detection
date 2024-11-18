@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prediction Result</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <h1>Prediction Result</h1>
+    <div id="gauge-chart"></div>
+
+    <script>
+        var data = [{
+            type: "indicator",
+            mode: "gauge+number",
+            value: parseFloat("{{ probability }}"),
+            title: { text: "Fraud Probability", font: { size: 24 } },
+            gauge: {
+                axis: { range: [0, 100] },
+                bar: { color: "{{ color }}" },
+                steps: [
+                    { range: [0, 30], color: "lightgreen" },
+                    { range: [30, 60], color: "yellow" },
+                    { range: [60, 100], color: "red" }
+                ],
+            }
+        }];
+
+        var layout = { width: 500, height: 400 };
+        Plotly.newPlot('gauge-chart', data, layout);
+    </script>
+
+    <h2>Model Probabilities</h2>
+    <div id="bar-chart"></div>
+
+    <script>
+        var probability = "{{ probability | tojson }}";
+        var color = "{{ color | tojson }}";
+
+        var data = [{
+            x: probs,
+            y: models,
+            type: 'bar',
+            orientation: 'h',
+            text: probs.map(p => p.toFixed(2) + '%'),
+            textposition: 'auto',
+        }];
+
+        var layout = {
+            title: 'Fraud Probability by Model',
+            xaxis: { title: 'Probability (%)', range: [0, 100] },
+            yaxis: { title: 'Models' },
+            height: 400,
+        };
+
+        Plotly.newPlot('bar-chart', data, layout);
+    </script>
+
+    <h2>Explanation</h2>
+    <p>{{ explanation }}</p>
+
+    <a href="/">&#8592; Back to Home</a>
+</body>
+</html>
